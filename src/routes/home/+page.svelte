@@ -79,16 +79,16 @@
                     <div class="flex-1 w-full flex items-center justify-center relative ">
                         {#if !croppedAvatar}
                             <div class="rounded-full absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white size-64 sm:size-80 opacity-70"></div>
-                            <img src="/images/santa-claus.png" class="w-4/5 max-w-xs relative" alt="" />
+                            <img src="/images/santa-claus.png" class="w-4/5 max-w-xs relative select-none" alt="" />
                         {:else}
-                            <img src={URL.createObjectURL(croppedAvatar)} class="w-4/5 max-w-xs relative rounded-3xl shadow" alt="" />
+                            <img src={URL.createObjectURL(croppedAvatar)} class="w-4/5 max-w-xs relative rounded-3xl shadow select-none" alt="" />
                         {/if}
                     </div>
                     <div class="w-full mt-6">
-                        <h1 class="text-primary-900 text-4xl font-bold text-left">
+                        <h1 class="text-primary-900 text-4xl font-bold text-left select-none">
                             Upload your avatar!
                         </h1>
-                        <div class="mt-4 text-surface-900">
+                        <div class="mt-4 text-surface-900 select-none">
                             Easy to use, just upload your avatar and we will do the rest!
                         </div>
                         <div class="grid mt-12 px-3 grid-cols-2 gap-6 place-items-center">

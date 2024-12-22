@@ -91,7 +91,7 @@
         if (audio) {
             audio.src = songs[currentSongIndex].src;
             audio.volume = 0.5;
-            // playSong();
+            playSong();
         }
         updateWidth();
         window.addEventListener('resize', updateWidth);
@@ -104,12 +104,12 @@
 <div class="bg-surface-500 rounded-3xl h-16 transition-all shadow-lg p-3 relative overflow-hidden w-full" transition:fade>
     <div class="flex gap-2">
         <div class="size-10 relative" style="transform: rotate({rotation}deg);">
-            <img src="/images/cd.png" alt="" class="absolute top-0 left-0 z-0" />
-            <img src="/images/santa-hat.png" alt="" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6"/>
+            <img src="/images/cd.png" alt="" class="absolute top-0 left-0 z-0 select-none" />
+            <img src="/images/santa-hat.png" alt="" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 select-none"/>
         </div>
         <div class="flex items-center overflow-hidden flex-1 relative" bind:this={divElement} >
             {#if songs.length > 0}
-                <p class="font-bold text-primary-900 text-nowrap"
+                <p class="font-bold text-primary-900 text-nowrap select-none"
                    class:animate-scroll={isPlaying}
                 >
                     {songs[currentSongIndex]?.title} - {songs[currentSongIndex].artist}

@@ -15,7 +15,7 @@
 
 <div class="w-full flex flex-col items-center h-full">
 	<div class="flex items-center justify-center flex-1 flex-col min-h-0">
-		<img src="/images/christmas-tree.png" class="w-4/5" alt="" />
+		<img src="/images/christmas-tree.png" class="w-4/5 select-none" alt="" />
 		<div class="flex flex-col gap-2 justify-center items-center mt-8 mb-16">
 			<h1 class="font-sans text-5xl select-none bg-gradient-to-br from-primary-500 to-cyan-600 font-bold bg-clip-text text-transparent box-decoration-clone">
 				Xmasify
