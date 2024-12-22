@@ -91,7 +91,7 @@
         if (audio) {
             audio.src = songs[currentSongIndex].src;
             audio.volume = 0.5;
-            playSong();
+            // playSong();
         }
         updateWidth();
         window.addEventListener('resize', updateWidth);
@@ -109,7 +109,7 @@
         </div>
         <div class="flex items-center overflow-hidden flex-1 relative" bind:this={divElement} >
             {#if songs.length > 0}
-                <p class="font-bold text-primary-900 text-nowrap font-sans"
+                <p class="font-bold text-primary-900 text-nowrap"
                    class:animate-scroll={isPlaying}
                 >
                     {songs[currentSongIndex]?.title} - {songs[currentSongIndex].artist}
@@ -119,7 +119,7 @@
         <div class="flex items-center space-x-2">
             <button
                 class="btn btn-icon variant-filled-secondary rounded-full size-9"
-                on:click={isPlaying ? pauseSong : playSong}
+                onclick={isPlaying ? pauseSong : playSong}
                 disabled={songs.length === 0}
             >
                 {#if isPlaying}
@@ -130,21 +130,21 @@
             </button>
             <button
                 class="btn btn-icon variant-filled-secondary rounded-full size-9"
-                on:click={() => switchSong((currentSongIndex + 1) % songs.length)}
+                onclick={() => switchSong((currentSongIndex + 1) % songs.length)}
             >
                 <SkipForward strokeWidth={2.5} class="size-5" />
             </button>
         </div>
     </div>
     <div class="absolute w-full -bottom-0 left-0">
-        <ProgressBar class="h-1 bg-secondary-500-token" meter="bg-secondary-500" value={currentTime} max={duration} />
+        <ProgressBar class="h-[0.2rem] bg-secondary-500-token" meter="bg-secondary-500" value={currentTime} max={duration} />
     </div>
     <audio
             bind:this={audio}
-            on:timeupdate={updateTime}
-            on:loadedmetadata={setDuration}
+            ontimeupdate={updateTime}
+            onloadedmetadata={setDuration}
             class="hidden"
-            on:ended={() => switchSong((currentSongIndex + 1) % songs.length)}
+            onended={() => switchSong((currentSongIndex + 1) % songs.length)}
     ></audio>
 </div>
 
