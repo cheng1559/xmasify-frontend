@@ -3,6 +3,7 @@
     import { songs } from './music-list';
     import { ProgressBar } from '@skeletonlabs/skeleton';
     import { Pause, Play, SkipForward } from "lucide-svelte";
+    import { fade } from 'svelte/transition';
 
     let currentSongIndex: number = 0; // 当前歌曲索引
     let isPlaying: boolean = false; // 播放状态
@@ -100,49 +101,50 @@
     });
 </script>
 
-<div class="absolute top-0 w-full p-3" >
-    <div class="bg-surface-500 rounded-2xl h-16 transition-all shadow p-3 relative overflow-hidden">
-        <div class="flex gap-2">
-            <img src="/images/cd.png" alt="" class="size-10" style="transform: rotate({rotation}deg);" />
-            <div class="flex items-center overflow-hidden flex-1 relative" bind:this={divElement} >
-                {#if songs.length > 0}
-                    <p class="font-bold text-primary-900 text-nowrap font-sans"
-                       class:animate-scroll={isPlaying}
-                    >
-                        {songs[currentSongIndex]?.title} - {songs[currentSongIndex].artist}
-                    </p>
-                {/if}
-            </div>
-            <div class="flex items-center space-x-2">
-                <button
-                    class="btn btn-icon variant-filled-secondary rounded-full size-9"
-                    on:click={isPlaying ? pauseSong : playSong}
-                    disabled={songs.length === 0}
-                >
-                    {#if isPlaying}
-                        <Pause strokeWidth={2.5} class="size-5" />
-                    {:else}
-                        <Play strokeWidth={2.5} class="size-5" />
-                    {/if}
-                </button>
-                <button
-                    class="btn btn-icon variant-filled-secondary rounded-full size-9"
-                    on:click={() => switchSong((currentSongIndex + 1) % songs.length)}
-                >
-                    <SkipForward strokeWidth={2.5} class="size-5" />
-                </button>
-            </div>
+<div class="bg-surface-500 rounded-3xl h-16 transition-all shadow-lg p-3 relative overflow-hidden w-full" transition:fade>
+    <div class="flex gap-2">
+        <div class="size-10 relative" style="transform: rotate({rotation}deg);">
+            <img src="/images/cd.png" alt="" class="absolute top-0 left-0 z-0" />
+            <img src="/images/santa-hat.png" alt="" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6"/>
         </div>
-        <div class="absolute w-full -bottom-0 px-1 left-0">
-            <ProgressBar class="h-1 bg-secondary-500-token" meter="bg-secondary-500" value={currentTime} max={duration} />
+        <div class="flex items-center overflow-hidden flex-1 relative" bind:this={divElement} >
+            {#if songs.length > 0}
+                <p class="font-bold text-primary-900 text-nowrap font-sans"
+                   class:animate-scroll={isPlaying}
+                >
+                    {songs[currentSongIndex]?.title} - {songs[currentSongIndex].artist}
+                </p>
+            {/if}
+        </div>
+        <div class="flex items-center space-x-2">
+            <button
+                class="btn btn-icon variant-filled-secondary rounded-full size-9"
+                on:click={isPlaying ? pauseSong : playSong}
+                disabled={songs.length === 0}
+            >
+                {#if isPlaying}
+                    <Pause strokeWidth={2.5} class="size-5" />
+                {:else}
+                    <Play strokeWidth={2.5} class="size-5" />
+                {/if}
+            </button>
+            <button
+                class="btn btn-icon variant-filled-secondary rounded-full size-9"
+                on:click={() => switchSong((currentSongIndex + 1) % songs.length)}
+            >
+                <SkipForward strokeWidth={2.5} class="size-5" />
+            </button>
         </div>
     </div>
+    <div class="absolute w-full -bottom-0 left-0">
+        <ProgressBar class="h-1 bg-secondary-500-token" meter="bg-secondary-500" value={currentTime} max={duration} />
+    </div>
     <audio
-        bind:this={audio}
-        on:timeupdate={updateTime}
-        on:loadedmetadata={setDuration}
-        class="hidden"
-        on:ended={() => switchSong(currentSongIndex + 1)}
+            bind:this={audio}
+            on:timeupdate={updateTime}
+            on:loadedmetadata={setDuration}
+            class="hidden"
+            on:ended={() => switchSong((currentSongIndex + 1) % songs.length)}
     ></audio>
 </div>
 
