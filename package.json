@@ -36,6 +36,7 @@
   "type": "module",
   "dependencies": {
     "@floating-ui/dom": "1.6.12",
+    "@fontsource/poppins": "^5.1.0",
     "lucide-svelte": "^0.469.0"
   }
 }

@@ -9,7 +9,11 @@ export default {
 	darkMode: 'selector',
 	content: ['./src/**/*.{html,js,svelte,ts}', join(require.resolve('@skeletonlabs/skeleton'), '../**/*.{html,js,svelte,ts}')],
 	theme: {
-		extend: {},
+		extend: {
+			fontFamily: {
+				sans: ['Poppins', 'sans-serif'],
+			},
+		},
 	},
 	plugins: [
 		forms,
