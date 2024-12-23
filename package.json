@@ -37,6 +37,7 @@
   "dependencies": {
     "@floating-ui/dom": "1.6.12",
     "@fontsource/poppins": "^5.1.0",
+    "@formkit/auto-animate": "^0.8.2",
     "lucide-svelte": "^0.469.0",
     "svelte-easy-crop": "^3.0.1"
   }

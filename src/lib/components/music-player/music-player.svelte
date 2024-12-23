@@ -91,7 +91,7 @@
         if (audio) {
             audio.src = songs[currentSongIndex].src;
             audio.volume = 0.5;
-            playSong();
+            // playSong()
         }
         updateWidth();
         window.addEventListener('resize', updateWidth);

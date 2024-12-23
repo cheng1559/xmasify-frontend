@@ -1,59 +1,52 @@
 <script lang="ts">
-    import type { SvelteComponent } from 'svelte';
+    import Cropper from 'svelte-easy-crop';
+    import type {CropArea} from "svelte-easy-crop/dist/types";
+    import { getCroppedImg } from "$lib/components/avatar-cropper/canvasUtils";
+    import { fade } from "svelte/transition";
 
-    // Stores
-    import { getModalStore } from '@skeletonlabs/skeleton';
+    let croppedAvatar: Blob | null = $state(null);
+    let pixelCrop: CropArea | null = $state(null);
 
-    // Props
-    /** Exposes parent props to this component. */
-    export let parent: SvelteComponent;
-
-    const modalStore = getModalStore();
-
-    // Form Data
-    const formData = {
-        name: 'Jane Doe',
-        tel: '214-555-1234',
-        email: 'jdoe@email.com'
-    };
-
-    // We've created a custom submit function to pass the response and close the modal.
-    function onFormSubmit(): void {
-        if ($modalStore[0].response) $modalStore[0].response(formData);
-        modalStore.close();
+    function saveCrop(crop: CustomEvent<{
+        percent: CropArea;
+        pixels: CropArea;
+    }>): void {
+        pixelCrop = crop.detail.pixels;
     }
 
-    // Base Classes
-    const cBase = 'card p-4 w-modal shadow-xl space-y-4';
-    const cHeader = 'text-2xl font-bold';
-    const cForm = 'border border-surface-500 p-4 space-y-4 rounded-container-token';
+    let { avatar, crop }: { 
+        avatar: string | null, 
+        crop: (croppedAvatar: Blob | null) => void
+    } = $props();
 </script>
 
-<!-- @component This example creates a simple form modal. -->
 
-{#if $modalStore[0]}
-    <div class="modal-example-form {cBase}">
-        <header class={cHeader}>{$modalStore[0].title ?? '(title missing)'}</header>
-        <article>{$modalStore[0].body ?? '(body missing)'}</article>
-        <!-- Enable for debugging: -->
-        <form class="modal-form {cForm}">
-            <label class="label">
-                <span>Name</span>
-                <input class="input" type="text" bind:value={formData.name} placeholder="Enter name..." />
-            </label>
-            <label class="label">
-                <span>Phone Number</span>
-                <input class="input" type="tel" bind:value={formData.tel} placeholder="Enter phone..." />
-            </label>
-            <label class="label">
-                <span>Email</span>
-                <input class="input" type="email" bind:value={formData.email} placeholder="Enter email address..." />
-            </label>
-        </form>
-        <!-- prettier-ignore -->
-        <footer class="modal-footer {parent.regionFooter}">
-            <button class="btn {parent.buttonNeutral}" on:click={parent.onClose}>{parent.buttonTextCancel}</button>
-            <button class="btn {parent.buttonPositive}" on:click={onFormSubmit}>{parent.buttonTextSubmit}</button>
-        </footer>
+{#if avatar}
+    <div transition:fade={{duration: 100}}>
+        <div class="absolute top-0 left-0 h-full w-full bg-black/60"></div>
+        <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center max-w-xs sm:max-w-sm w-full p-4 rounded-3xl bg-surface-500">
+            <div class="relative size-72 rounded-xl overflow-hidden border">
+                <Cropper
+                    image={avatar}
+                    crop={{x: 0, y: 0}}
+                    zoom={1}
+                    aspect={1}
+                    on:cropcomplete={saveCrop}
+                />
+            </div>
+            <div class="flex justify-center items-center mt-4 w-full gap-8">
+                <button class="btn variant-outline-primary font-medium !text-black w-20" onclick={() => avatar = null}>
+                    Cancel
+                </button>
+                <button class="btn variant-filled-primary font-medium !text-black w-20" onclick={async () => {
+                    if (!avatar || !pixelCrop) return;
+                    croppedAvatar = await getCroppedImg(avatar, pixelCrop);
+                    avatar = null;
+                    crop(croppedAvatar);
+                }}>
+                    Crop
+                </button>
+            </div>
+        </div>
     </div>
 {/if}
