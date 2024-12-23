@@ -9,7 +9,6 @@ export default defineConfig({
 			'/api': {
 				target: 'https://xmasify.cc',
 				changeOrigin: true,
-				rewrite: (path) => path.replace(/^\/api/, ''),
 			},
 		},
 	},

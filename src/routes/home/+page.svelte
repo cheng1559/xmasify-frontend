@@ -116,11 +116,11 @@
 <!--                        Draw the area you want to wear santa hat!-->
 <!--                    </h1>-->
                     <div class="grid mt-12 px-3 grid-cols-2 gap-6 place-items-center">
-                        <button class="btn variant-filled-secondary btn-lg rounded-[3rem] !text-black max-w-36 w-full font-medium" onclick={handleUpload}>
-                            Start
-                        </button>
                         <button class="btn variant-filled-secondary btn-lg rounded-[3rem] !text-black max-w-36 w-full font-medium" onclick={() => step = 1}>
                             Back
+                        </button>
+                        <button class="btn variant-filled-secondary btn-lg rounded-[3rem] !text-black max-w-36 w-full font-medium" onclick={handleUpload}>
+                            Start
                         </button>
                     </div>
                 </div>
