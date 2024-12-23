@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onDestroy, onMount } from "svelte";
     import { RangeSlider } from '@skeletonlabs/skeleton';
-    import {Circle, Eraser} from "lucide-svelte";
+    import { Circle, Eraser } from "lucide-svelte";
 
     let { avatar }: {
         avatar: Blob | null
@@ -152,6 +152,62 @@
             brush.style.height = `${Math.max(brushSize, 10)}px`;
             brush.style.borderWidth = `${Math.max(brushSize / 10, 1)}px`;
         }
+    }
+
+    export async function getMask(): Promise<Blob | null> {
+        if (!canvas) return null;
+        return new Promise<Blob | null>((resolve) => {
+            canvas?.toBlob((originalBlob) => {
+                if (!originalBlob) {
+                    resolve(null);
+                    return;
+                }
+
+                const img = new Image();
+                const url = URL.createObjectURL(originalBlob);
+
+                img.onload = () => {
+                    // 创建一个新的 canvas 来处理图像
+                    const maskCanvas = document.createElement('canvas');
+                    const ctx = maskCanvas.getContext('2d');
+                    if (ctx) {
+                        maskCanvas.width = img.width;
+                        maskCanvas.height = img.height;
+                        ctx.drawImage(img, 0, 0);
+
+                        const imageData = ctx.getImageData(0, 0, img.width, img.height);
+                        const data = imageData.data;
+                        for (let i = 0; i < data.length; i += 4) {
+                            const r = data[i];
+                            const g = data[i + 1];
+                            const b = data[i + 2];
+                            if (r === 0 && g === 0 && b === 0 && data[i + 3] !== 0) {
+                                data[i] = 255;
+                                data[i + 1] = 255;
+                                data[i + 2] = 255;
+                            } else {
+                                data[i] = 0;
+                                data[i + 1] = 0;
+                                data[i + 2] = 0;
+                            }
+                            data[i + 3] = 255;
+                        }
+                        ctx.putImageData(imageData, 0, 0);
+                        maskCanvas.toBlob((maskBlob) => {
+                            resolve(maskBlob);
+                        });
+                    } else {
+                        resolve(null);
+                    }
+                };
+
+                img.onerror = () => {
+                    resolve(null);
+                };
+
+                img.src = url;
+            });
+        });
     }
 </script>
 

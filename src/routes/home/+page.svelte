@@ -5,9 +5,10 @@
     import { FileButton } from '@skeletonlabs/skeleton';
     import { onMount } from 'svelte';
     import { AvatarCropper } from "$lib/components/avatar-cropper";
-    import {AvatarPainter} from "$lib/components/avatar-painter";
+    import { AvatarPainter } from "$lib/components/avatar-painter";
     import autoAnimate from "@formkit/auto-animate"
-    import {ArrowRight} from "lucide-svelte";
+    import { ArrowRight } from "lucide-svelte";
+    import { xmasify } from "$lib/api/xmasify-api";
 
     const toastStore = getToastStore();
 
@@ -25,12 +26,13 @@
     let avatar: string | null = $state(null);
     let avatarFile: Blob | null = $state(null);
     let croppedAvatar: Blob | null = $state(null);
-    let avatarMask: Blob | null = $state(null);
+    let mask: Blob | null = $state(null);
+    let xmasifiedAvatar: Blob | null = $state(null);
+    let avatarPainter: ReturnType<typeof AvatarPainter> | null = $state(null);
 
     function onChangeHandler(e: Event): void {
         const file = (e.target as HTMLInputElement).files?.[0];
         if (file && checkFileIsValid(file)) {
-            console.log('file:', file);
             avatarFile = file;
             avatar = URL.createObjectURL(avatarFile);
             toastStore.trigger({
@@ -49,6 +51,14 @@
     onMount(() => {
         changeStep(1);
     });
+
+    async function handleUpload() {
+        if (!avatarPainter) return;
+        mask = await avatarPainter.getMask();
+        if (!croppedAvatar || !mask) return;
+        const prompt = 'This is a huge red santa hat!';
+        xmasifiedAvatar = await xmasify(croppedAvatar, mask, prompt);
+    }
 
 </script>
 
@@ -97,17 +107,20 @@
             </div>
         {:else if step === 2}
             <div class="absolute top-0 left-0 h-full w-full p-8 flex flex-col items-center justify-center" transition:fade>
-                <AvatarPainter avatar={croppedAvatar} />
+                <AvatarPainter bind:this={avatarPainter} avatar={croppedAvatar} />
+                {#if xmasifiedAvatar}
+                    <img class="size-32" src={URL.createObjectURL(xmasifiedAvatar)} alt="" />
+                {/if}
                 <div class="w-full mt-6">
 <!--                    <h1 class="text-primary-900 h1 font-bold text-left select-none">-->
 <!--                        Draw the area you want to wear santa hat!-->
 <!--                    </h1>-->
                     <div class="grid mt-12 px-3 grid-cols-2 gap-6 place-items-center">
-                        <FileButton button="btn variant-filled-primary btn-lg rounded-[3rem] !text-black w-full font-medium" class="max-w-36 w-full" name="avatar" accept="image/*" on:change={onChangeHandler}>
-                            { avatarFile ? 'Re-upload' : 'Upload' }
-                        </FileButton>
-                        <button class="btn variant-filled-secondary btn-lg rounded-[3rem] !text-black max-w-36 w-full font-medium" disabled={avatarFile === null} onclick={() => changeStep(step + 1)}>
-                            Next
+                        <button class="btn variant-filled-secondary btn-lg rounded-[3rem] !text-black max-w-36 w-full font-medium" onclick={handleUpload}>
+                            Start
+                        </button>
+                        <button class="btn variant-filled-secondary btn-lg rounded-[3rem] !text-black max-w-36 w-full font-medium" onclick={() => step = 1}>
+                            Back
                         </button>
                     </div>
                 </div>
