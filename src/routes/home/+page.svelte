@@ -208,6 +208,7 @@
                         autoplay
                         loop
                         muted
+                        playsinline
                     >
                         <source src="/demo/step1.mp4" type="video/mp4">
                     </video>
@@ -235,6 +236,7 @@
                         autoplay
                         loop
                         muted
+                        playsinline
                     >
                         <source src="/demo/step2.mp4" type="video/mp4">
                     </video>
@@ -312,6 +314,8 @@
                 <button class="btn variant-filled-primary btn-lg rounded-[3rem] max-w-36 w-full font-medium mt-2" onclick={() => changeStep(1)}>
                     Try again!
                 </button>
+
+                <div class="absolute bottom-1 w-full items-center justify-center text-surface-900 text-center text-xs"> By Cheng🍊 2024/12/24 </div>
             </div>
         {/if}
     </div>
