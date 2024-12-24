@@ -35,10 +35,10 @@
                 />
             </div>
             <div class="flex justify-center items-center mt-4 w-full gap-8">
-                <button class="btn variant-outline-primary font-medium !text-black w-20" onclick={() => avatar = null}>
+                <button class="btn variant-outline-primary font-medium !text-primary-900 w-20" onclick={() => avatar = null}>
                     Cancel
                 </button>
-                <button class="btn variant-filled-primary font-medium !text-black w-20" onclick={async () => {
+                <button class="btn variant-filled-primary font-medium w-20" onclick={async () => {
                     if (!avatar || !pixelCrop) return;
                     croppedAvatar = await getCroppedImg(avatar, pixelCrop);
                     avatar = null;

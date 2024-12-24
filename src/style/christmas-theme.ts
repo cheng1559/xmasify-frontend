@@ -12,7 +12,8 @@ export const christmasTheme: CustomThemeConfig = {
         "--theme-rounded-container": "24px",
         "--theme-border-base": "2px",
         // =~= Theme On-X Colors =~=
-        "--on-primary": "var(--color-primary-900)",
+        "--on-primary": "0 0 0",
+        // "--on-primary": "var(--color-primary-900)",
         "--on-secondary": "255 255 255",
         "--on-tertiary": "0 0 0",
         "--on-success": "0 0 0",

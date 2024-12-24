@@ -9,3 +9,8 @@ html {
 body {
     @apply font-sans;
 }
+
+* {
+    -webkit-user-drag: none;  /* 禁止图片和其他元素拖动 */
+    user-select: none;  /* 禁止文本选择 */
+}

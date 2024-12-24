@@ -8,6 +8,7 @@ export default defineConfig({
 		proxy: {
 			'/api': {
 				target: 'https://xmasify.cc',
+				// target: 'http://xmasify.cc',
 				changeOrigin: true,
 			},
 		},

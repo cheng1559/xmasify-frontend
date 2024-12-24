@@ -91,7 +91,7 @@
         if (audio) {
             audio.src = songs[currentSongIndex].src;
             audio.volume = 0.5;
-            // playSong()
+            playSong();
         }
         updateWidth();
         window.addEventListener('resize', updateWidth);
@@ -105,7 +105,7 @@
     <div class="flex gap-2">
         <div class="size-10 relative" style="transform: rotate({rotation}deg);">
             <img src="/images/cd.png" alt="" class="absolute top-0 left-0 z-0 select-none" />
-            <img src="/images/santa-hat.png" alt="" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 select-none"/>
+            <img src="/images/santa-hat.png" alt="" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 select-none"  draggable={false}/>
         </div>
         <div class="flex items-center overflow-hidden flex-1 relative" bind:this={divElement} >
             {#if songs.length > 0}
@@ -140,11 +140,11 @@
         <ProgressBar class="h-[0.2rem] bg-secondary-500-token" meter="bg-secondary-500" value={currentTime} max={duration} />
     </div>
     <audio
-            bind:this={audio}
-            ontimeupdate={updateTime}
-            onloadedmetadata={setDuration}
-            class="hidden"
-            onended={() => switchSong((currentSongIndex + 1) % songs.length)}
+        bind:this={audio}
+        ontimeupdate={updateTime}
+        onloadedmetadata={setDuration}
+        class="hidden"
+        onended={() => switchSong((currentSongIndex + 1) % songs.length)}
     ></audio>
 </div>
 
