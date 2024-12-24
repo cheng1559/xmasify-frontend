@@ -47,6 +47,8 @@
     let hasMask: boolean = $state(false);
     let avatarPainter: ReturnType<typeof AvatarPainter> | null = $state(null);
 
+
+
     function onChangeHandler(e: Event): void {
         const file = (e.target as HTMLInputElement).files?.[0];
         if (file && checkFileIsValid(file)) {
