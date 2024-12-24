@@ -55,20 +55,20 @@ export async function getCroppedImg(imageSrc: string, pixelCrop: CropArea, rotat
         Math.round(0 - safeArea / 2 + image.height * 0.5 - pixelCrop.y)
     )
 
-    // const resizeCanvas = document.createElement('canvas');
-    // resizeCanvas.width = 512;
-    // resizeCanvas.height = 512;
-    // const resizeCtx = resizeCanvas.getContext('2d');
-    //
-    // if (!resizeCtx) {
-    //     throw new Error('Failed to get resize canvas context');
-    // }
-    //
-    // // Draw the cropped image into the resize canvas
-    // resizeCtx.drawImage(canvas, 0, 0, 512, 512);
+    const resizeCanvas = document.createElement('canvas');
+    resizeCanvas.width = 512;
+    resizeCanvas.height = 512;
+    const resizeCtx = resizeCanvas.getContext('2d');
+
+    if (!resizeCtx) {
+        throw new Error('Failed to get resize canvas context');
+    }
+
+    // Draw the cropped image into the resize canvas
+    resizeCtx.drawImage(canvas, 0, 0, 512, 512);
 
     return new Promise<Blob | null>((resolve) => {
-        canvas.toBlob((file) => {
+        resizeCanvas.toBlob((file) => {
             resolve(file)
         }, 'image/png')
     })
